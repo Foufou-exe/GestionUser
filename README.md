@@ -38,6 +38,9 @@ Exécutez le fichier gestionUser.py :
 python gestionUser.py
 ```
 
+### Exemple utilisation ✨
+
+![screen2](images/screen2.gif)
 ## Interface utilisateur👌
 
 L'interface utilisateur comprend :
