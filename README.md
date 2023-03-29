@@ -38,15 +38,19 @@ Exécutez le fichier gestionUser.py :
 python gestionUser.py
 ```
 
+### Exemple utilisation ✨
+
+![screen2](images/screen2.gif)
+
 ## Interface utilisateur👌
 
 L'interface utilisateur comprend :
 
 - Un champ de saisie pour le nom d'utilisateur
-- Un bouton "Ajouter" pour ajouter un nouvel utilisateur
-- Un bouton "Supprimer" pour supprimer l'utilisateur sélectionné
-- Un champ de saisie pour la valeur à mettre à jour (nom d'utilisateur ou mot de passe)
-- Un bouton "Mettre à jour" pour mettre à jour la valeur sélectionnée
+- Un bouton "**Ajouter**" pour ajouter un nouvel utilisateur
+- Un bouton "**Supprimer**" pour supprimer l'utilisateur sélectionné
+- Un champ de saisie pour la valeur à mettre à jour (*nom d'utilisateur ou mot de passe*)
+- Un bouton "**Mettre à jour**" pour mettre à jour la valeur sélectionnée
 - Une table affichant les utilisateurs avec leurs ID, noms d'utilisateur et mots de passe masqués
 
 ### Visuel GestionUser
@@ -227,6 +231,33 @@ def main():
 if __name__ == "__main__":
     main()
 ```
+
+## Base de Donnée (MongoDB)
+
+### Installation MongoDB avec Docker 🐋
+
+Initialisation de la Base de donnée avec Docker :
+
+```cmd
+docker run --name mongodb -d -p 27017:27017 mongodb/mongodb-community-server:latest
+```
+
+### Visualisation avec Compass MongoDB
+
+Pour ma part, j'utilise Compass MongoDB pour visualisé la Base de donnée en local:
+
+#### Base Test
+
+![Screen](images/screen3.png)
+
+#### Collection users
+
+![Screen](images/screen4.png)
+
+#### Indexe
+
+![Screen](images/screen5.png)
+
 ## Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
