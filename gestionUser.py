@@ -1,81 +1,5 @@
-# GestionUser
+"""Fichier principal de l'application"""
 
-## Description ✨
-
-Ce programme est une application de gestion des utilisateurs utilisant Tkinter et MongoDB. Il permet d'ajouter, de supprimer et de mettre à jour les utilisateurs avec leur mot de passe.
-
-## Prérequis ❓
-
-- Python 3
-- Tkinter
-- ttkbootstrap
-- pymongo
-
-## Fonctionnalités 🚀
-
-- Ajouter un nouvel utilisateur avec un mot de passe aléatoire
-- Supprimer un utilisateur sélectionné
-- Mettre à jour le nom d'utilisateur ou le mot de passe d'un utilisateur sélectionné
-- Masquer les mots de passe avec des astérisques dans la table des utilisateurs
-
-## Utilisation 👨‍💻
-
-Clonez ou téléchargez ce dépôt :
-
-```cmd
-git clone https://github.com/Foufou-exe/GestionUser
-```
-
-Installez les dépendances en exécutant :
-
-```python
-pip install -r requirements.txt
-```
-
-Exécutez le fichier gestionUser.py :
-
-```cmd
-python gestionUser.py
-```
-
-## Interface utilisateur👌
-
-L'interface utilisateur comprend :
-
-- Un champ de saisie pour le nom d'utilisateur
-- Un bouton "Ajouter" pour ajouter un nouvel utilisateur
-- Un bouton "Supprimer" pour supprimer l'utilisateur sélectionné
-- Un champ de saisie pour la valeur à mettre à jour (nom d'utilisateur ou mot de passe)
-- Un bouton "Mettre à jour" pour mettre à jour la valeur sélectionnée
-- Une table affichant les utilisateurs avec leurs ID, noms d'utilisateur et mots de passe masqués
-
-### Visuel GestionUser
-
-![Screen](images/screen.png)
-
-## Code
-
-Le code principal est divisé en plusieurs fonctions pour gérer les différentes fonctionnalités de l'application :
-
-- `add_user()` : ajoute un nouvel utilisateur à la base de données avec un mot de passe aléatoire.
-
-- `delete_user()` : supprime l'utilisateur sélectionné dans la table des utilisateurs.
-
-- `update_users_table()` : met à jour la table des utilisateurs avec les données de la base de données.
-
-- `update_user()` : met à jour l'utilisateur sélectionné dans la table des utilisateurs (nom d'utilisateur ou mot de passe).
-mask_password(password): masque le mot de passe avec des astérisques.
-get_selected_values(event): récupère les valeurs sélectionnées dans la table des utilisateurs lorsqu'un utilisateur clique sur une cellule de la table.
-
-- `main()` : fonction principale qui gère l'interface utilisateur et les interactions utilisateur.
-
-## Structure du code
-
-Le code est structuré de la manière suivante :
-
-- Importation des modules nécessaires
-
-```python
 # Importer les modules
 import tkinter as tk
 from tkinter import *
@@ -87,11 +11,10 @@ import os
 import platform
 import sys
 from pymongo import MongoClient
-```
 
-- Connexion à la base de données MongoDB et création de la collection "users" si elle n'existe pas
 
-```python
+""" Connexion à la base de données MongoDB"""
+
 uri = "mongodb://localhost:27017"
 
 client = MongoClient(uri)
@@ -112,11 +35,8 @@ validator = {
 
 if "users" not in db.list_collection_names():
     db.create_collection("users", validator=validator)
-```
 
-- Définition des fonctions pour gérer les fonctionnalités de l'application
 
-```python
 def add_user():
     """Ajouter un nouvel utilisateur à la base de données"""
     name = user_entry.get()
@@ -139,17 +59,115 @@ def add_user():
         update_users_table()
         user_entry.delete(0, tk.END)
 
+
 def delete_user():
     """Supprimer l'utilisateur sélectionné dans la table des utilisateurs"""
     selected_user = users_table.item(users_table.selection())["values"][0]
     db.users.delete_one({"id": selected_user})
     update_users_table()
 
-```
 
-- Définition de la fonction principale main() qui gère l'interface utilisateur et les interactions utilisateur
+def update_users_table():
+    """Mettre à jour la table des utilisateurs"""
+    for user in users_table.get_children():
+        users_table.delete(user)
 
-```python
+    users = db.users.find({}, {"_id": 0})
+    for user in users:
+        users_table.insert(
+            "", tk.END, values=(user["id"], user["username"], user["password"])
+        )
+
+
+def update_user():
+    """Mettre à jour l'utilisateur sélectionné dans la table des utilisateurs"""
+    global selected_value, selected_user_id
+    if selected_value and selected_user_id:
+        new_value = update_entry.get()
+        if selected_value == "password":
+            db.users.update_one(
+                {"id": selected_user_id}, {"$set": {"password": new_value}}
+            )
+        elif selected_value == "username":
+            db.users.update_one(
+                {"id": selected_user_id}, {"$set": {"username": new_value}}
+            )
+        update_users_table()
+        update_entry.delete(0, tk.END)
+
+
+def update_users_table():
+    """Mettre à jour la table des utilisateurs"""
+    for user in users_table.get_children():
+        users_table.delete(user)
+
+    users = db.users.find({}, {"_id": 0})
+    for user in users:
+        id_value = user["id"]
+        username_value = user["username"]
+        password_value = mask_password(user["password"])
+        users_table.insert(
+            "", tk.END, values=(id_value, username_value, password_value)
+        )
+
+
+def mask_password(password):
+    """Masquer le mot de passe avec des astérisques"""
+    return "*" * len(password)
+
+
+def get_selected_values(event):
+    """Récupérer les valeurs sélectionnées dans la table des utilisateurs"""
+    global selected_value, selected_user_id
+    try:
+        clicked_column = users_table.identify_column(event.x)
+        selected_item = users_table.selection()
+
+        if not selected_item:
+            selected_value = None
+            return
+
+        selected_item = selected_item[0]
+
+        if clicked_column == "#3":  # La colonne "Password" est la 3ème colonne
+            id_value = users_table.item(selected_item)["values"][0]
+            selected_value = "password"
+            selected_user_id = id_value
+            password_value = db.users.find_one({"id": id_value})["password"]
+            _hash = users_table.item(selected_item)["values"][2]
+            if _hash == password_value:
+                users_table.item(
+                    selected_item,
+                    values=(
+                        id_value,
+                        users_table.item(selected_item)["values"][1],
+                        mask_password(password_value),
+                    ),
+                )
+            else:
+                users_table.item(
+                    selected_item,
+                    values=(
+                        id_value,
+                        users_table.item(selected_item)["values"][1],
+                        password_value,
+                    ),
+                )
+
+        if clicked_column == "#2":
+            users_table.item(selected_item)["values"][1]
+            id_value = users_table.item(selected_item)["values"][0]
+            selected_value = "username"
+            selected_user_id = id_value
+
+        if clicked_column == "#1":
+            id_value = users_table.item(selected_item)["values"][0]
+            selected_user_id = id_value
+            
+    except IndexError:
+        pass
+
+
 def main():
     """Fonction principale"""
     global users_table, update_entry, user_entry
@@ -219,14 +237,7 @@ def main():
         root.destroy()
         sys.exit(0)
     root.mainloop()
-```
 
-- Exécution de la fonction principale main() si le fichier est exécuté en tant que script principal
 
-```python
 if __name__ == "__main__":
     main()
-```
-## Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
