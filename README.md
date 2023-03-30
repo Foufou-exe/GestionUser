@@ -4,6 +4,31 @@
 
 Ce programme est une application de gestion des utilisateurs utilisant Tkinter et MongoDB. Il permet d'ajouter, de supprimer et de mettre à jour les utilisateurs avec leur mot de passe.
 
+### Différence entre SQL et NoSQL
+
+*Pour les utilisateurs qui ne connaissent pas le Language NoSQL*
+
+Il faut imaginer que tu as une boîte avec des données (comme des informations sur des personnes, des produits, etc.). Il existe plusieurs façons de ranger ces données dans cette boîte. SQL et NoSQL sont deux méthodes différentes pour organiser et manipuler ces données.
+
+SQL (Structured Query Language) est une approche qui utilise des tableaux (un peu comme des feuilles de calcul Excel) pour organiser les données. Chaque tableau a des colonnes et des lignes, et les données sont rangées de manière très structurée. Les colonnes définissent les types d'informations (par exemple, nom, âge, adresse), et les lignes représentent chaque entrée (par exemple, chaque personne). Cette approche est utilisée par des bases de données relationnelles comme MySQL, PostgreSQL et SQL Server.
+
+NoSQL (Not Only SQL) est une approche plus flexible pour organiser les données. Au lieu d'utiliser des tableaux, NoSQL utilise différentes structures pour stocker les données, comme des documents, des paires clé-valeur, des graphes ou des colonnes larges. Cette approche est utilisée par des bases de données non-relationnelles comme MongoDB, Cassandra et Redis.
+
+En résumé, la principale différence entre SQL et NoSQL réside dans la manière dont les données sont organisées et gérées. SQL est plus structuré et utilise des tableaux pour organiser les données, tandis que NoSQL est plus flexible et utilise diverses structures pour stocker les informations.
+
+### Avantage pour NoSQL
+
+- **Flexibilité** : Les bases de données NoSQL sont plus flexibles en termes de structure des données, car elles n'exigent pas de schéma fixe. Cela permet d'ajouter, de modifier ou de supprimer des types d'informations sans avoir à modifier toute la structure de la base de données.
+
+- **Scalabilité** : Les bases de données NoSQL sont conçues pour fonctionner efficacement sur plusieurs serveurs et pour gérer de grands volumes de données. Elles peuvent être facilement étendues en ajoutant de nouveaux serveurs au système, ce qui permet de mieux gérer la croissance des données et du trafic.
+
+- **Haute disponibilité** : La plupart des bases de données NoSQL prennent en charge la réplication des données sur plusieurs serveurs, ce qui permet une meilleure tolérance aux pannes et une récupération rapide en cas de défaillance d'un serveur.
+
+- **Performance** : Pour certaines applications, les bases de données NoSQL peuvent offrir de meilleures performances, en particulier lorsqu'il s'agit de lire ou d'écrire de grandes quantités de données ou de traiter des données semi-structurées ou non structurées.
+
+- **Adaptabilité** : Les bases de données NoSQL peuvent être mieux adaptées à certaines situations ou problèmes spécifiques, comme le traitement des données en temps réel, la gestion des réseaux sociaux ou des données de capteurs, où les relations entre les données sont complexes ou changeantes.
+
+Cependant, il est important de noter que NoSQL n'est pas toujours la meilleure solution pour tous les projets. Les bases de données SQL peuvent être plus appropriées lorsque les données sont fortement structurées, que les relations entre les données sont importantes, ou que des transactions complexes et des requêtes d'analyse sont nécessaires. 
 ## Prérequis ❓
 
 - Python 3
